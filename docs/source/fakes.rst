@@ -169,8 +169,8 @@ Returning at a specific call count
 
 .. code-block:: typescript
 
-  myFake.myFunction.returnsAtCall(0, 5678);
-  myFake.myFunction.returnsAtCall(1, 1234);
+  myFake.myFunction.atCall(0).returns(5678);
+  myFake.myFunction.atCall(1).returns(1234);
 
   await myFake.myFunction(); // returns 5678
   await myFake.myFunction(); // returns 1234

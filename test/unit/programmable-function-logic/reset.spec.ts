@@ -105,9 +105,9 @@ describe('ProgrammableFunctionLogic: Reset', () => {
   });
 
   it('should reset call index', async () => {
-    fake.getString.returnsAtCall(0, 'a');
+    fake.getString.atCall(0).returns('a');
     fake.getString.reset();
-    fake.getString.returnsAtCall(0, 'b');
+    fake.getString.atCall(0).returns('b');
     expect(await fake.callStatic.getString()).to.equal('b');
   });
 

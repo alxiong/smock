@@ -15,15 +15,7 @@ export class WatchableFunctionLogic {
     calls$.subscribe((call) => this.callHistory.push(call));
   }
 
-  atCall(index: number): WatchableFunctionLogic {
-    if (!this.getCall(index))
-      throw new Error(
-        `expected ${this.name} to have been called ${humanizeTimes(index + 1)}, but it was called ${humanizeTimes(this.getCallCount())}`
-      );
-    return new WatchableFunctionLogic(this.name, of(this.getCall(index)));
-  }
-
-  getCall(index: number): ContractCall {
+  getCall(index: number): ContractCall | undefined {
     return this.callHistory[index];
   }
 

@@ -24,8 +24,7 @@ export interface SmockVMManager {
 
 export interface WatchableContractFunction {
   _watchable: WatchableFunctionLogic;
-  atCall: (index: number) => WatchableFunctionLogic;
-  getCall: (index: number) => ContractCall;
+  getCall: (index: number) => ContractCall | undefined;
 }
 
 export interface ContractCall {
@@ -48,6 +47,7 @@ export interface ProgrammableContractFunction extends WatchableContractFunction 
   revertsAtCall: (index: number, reason?: string) => void;
   whenCalledWith: (...args: unknown[]) => ReturnRevertChain;
   reset: () => void;
+  atCall: (index: number) => AtCallChain;
 }
 
 export type SmockContractBase<T extends BaseContract> = Omit<BaseContract, 'connect'> &

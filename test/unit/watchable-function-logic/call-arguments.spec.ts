@@ -117,13 +117,13 @@ describe('WatchableFunctionLogic: Call arguments', () => {
   describe('getCall', () => {
     it('should provide call arguments', async () => {
       await sendBooleanToWatchableContract(true);
-      fake.receiveBoolean.getCall(0).args.should.deep.equal([true]);
+      fake.receiveBoolean.getCall(0)?.args.should.deep.equal([true]);
     });
 
     it('should provide call nonce', async () => {
       await sendBooleanToWatchableContract(true);
       await sendBooleanToWatchableContract(true);
-      fake.receiveBoolean.getCall(1).nonce.should.be.gt(fake.receiveBoolean.getCall(0).nonce);
+      fake.receiveBoolean.getCall(1)?.nonce.should.be.gt(fake.receiveBoolean.getCall(0)?.nonce);
     });
   });
 

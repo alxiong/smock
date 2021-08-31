@@ -19,7 +19,7 @@ describe('WatchableFunctionLogic: At call', () => {
     fake = await smock.fake<Receiver>('Receiver');
   });
 
-  it('should throw when the watchablecontract was never called', async () => {
+  it.only('should throw when the watchablecontract was never called', async () => {
     expect(() => {
       fake.receiveString.atCall(0).should.have.been.calledWith('b');
     }).to.throw('expected receiveString to have been called once, but it was called 0 times');

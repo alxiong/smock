@@ -15,20 +15,20 @@ describe('ProgrammableFunctionLogic: At call', () => {
   describe('returns', () => {
     it('should override default behaviour', async () => {
       fake.getString.returns('a');
-      fake.getString.returnsAtCall(0, 'b');
+      fake.getString.atCall(0).returns('b');
 
       expect(await fake.callStatic.getString()).to.equal('b');
     });
 
     it('should override itself', async () => {
-      fake.getString.returnsAtCall(0, 'a');
-      fake.getString.returnsAtCall(0, 'b');
+      fake.getString.atCall(0).returns('a');
+      fake.getString.atCall(0).returns('b');
 
       expect(await fake.callStatic.getString()).to.equal('b');
     });
 
     it('should be reseted', async () => {
-      fake.getString.returnsAtCall(0, 'a');
+      fake.getString.atCall(0).returns('a');
       fake.getString.reset();
       fake.getString.returns('b');
 
@@ -37,7 +37,7 @@ describe('ProgrammableFunctionLogic: At call', () => {
 
     it('should live together with default', async () => {
       fake.getString.returns('a');
-      fake.getString.returnsAtCall(1, 'b');
+      fake.getString.atCall(1).returns('b');
 
       expect(await fake.callStatic.getString()).to.equal('a');
       expect(await fake.callStatic.getString()).to.equal('b');
@@ -45,8 +45,8 @@ describe('ProgrammableFunctionLogic: At call', () => {
     });
 
     it('should change value by call', async () => {
-      fake.getString.returnsAtCall(0, 'a');
-      fake.getString.returnsAtCall(1, 'b');
+      fake.getString.atCall(0).returns('a');
+      fake.getString.atCall(1).returns('b');
 
       expect(await fake.callStatic.getString()).to.equal('a');
       expect(await fake.callStatic.getString()).to.equal('b');

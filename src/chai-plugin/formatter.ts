@@ -62,11 +62,14 @@ export const formatters: { [key: string]: (watchableContract: WatchableFunctionL
       if (l > 1) {
         message += `\nCall ${i + 1}:`;
       }
-      var calledArgs = watchableContract.getCall(i).args;
-      var expectedArgs = args.slice();
+      const call = watchableContract.getCall(i);
+      if (!call) throw new Error(
+        `expected ${watchableContract.getName()} to have been called ${humanizeTimes(i + 1)}, but it was called ${humanizeTimes(watchableContract.getCallCount())}`
+      );
+      const expectedArgs = args.slice();
 
-      for (var j = 0; j < calledArgs.length || j < expectedArgs.length; ++j) {
-        let parsedCalledArgs = calledArgs[j];
+      for (var j = 0; j < call.args.length || j < expectedArgs.length; ++j) {
+        let parsedCalledArgs = call.args[j];
         let parsedExpectedArgs = expectedArgs[j];
 
         if (parsedCalledArgs) {
@@ -83,7 +86,7 @@ export const formatters: { [key: string]: (watchableContract: WatchableFunctionL
 
         message += '\n';
 
-        var calledArgMessage = j < calledArgs.length ? sinonFormat(parsedCalledArgs) : '';
+        var calledArgMessage = j < call.args.length ? sinonFormat(parsedCalledArgs) : '';
         // TODO: what is this
         // if (match.isMatcher(parsedExpectedArgs)) {
         //   message += colorSinonMatchText(parsedExpectedArgs, parsedCalledArgs, calledArgMessage);

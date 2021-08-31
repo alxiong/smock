@@ -3,7 +3,7 @@ import { VmError } from '@nomiclabs/ethereumjs-vm/dist/exceptions';
 import BN from 'bn.js';
 import { ethers } from 'ethers';
 import { findLast } from 'lodash';
-import { Observable, withLatestFrom } from 'rxjs';
+import { Observable, of, withLatestFrom, EMPTY } from 'rxjs';
 import { AtCallChain, ContractCall, ProgrammedReturnValue, ReturnRevertChain } from '../index';
 import { WatchableFunctionLogic } from '../logic/watchable-function-logic';
 import { fromHexString } from '../utils';
@@ -79,7 +79,11 @@ export class ProgrammableFunctionLogic extends WatchableFunctionLogic {
   }
 
   atCall(index: number): AtCallChain {
-    const chain: Partial<AtCallChain> = super.atCall(index);
+    const call = this.getCall(index);
+    const chain: Partial<AtCallChain> = new WatchableFunctionLogic(
+      this.name,
+      call ? of(call) : EMPTY
+    );
     chain.returns = (value?: ProgrammedReturnValue) => {
       this.answerByIndex[index] = new ProgrammedAnswer(value, false);
     };
