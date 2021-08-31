@@ -4,7 +4,7 @@ import BN from 'bn.js';
 import { ethers } from 'ethers';
 import { findLast } from 'lodash';
 import { Observable, withLatestFrom } from 'rxjs';
-import { ContractCall, ProgrammedReturnValue, WhenCalledWithChain } from '../index';
+import { AtCallChain, ContractCall, ProgrammedReturnValue, ReturnRevertChain } from '../index';
 import { WatchableFunctionLogic } from '../logic/watchable-function-logic';
 import { fromHexString } from '../utils';
 
@@ -48,10 +48,11 @@ export class ProgrammableFunctionLogic extends WatchableFunctionLogic {
   }
 
   returnsAtCall(callIndex: number, value?: ProgrammedReturnValue): void {
+    console.warn(`The use of returnsAtCall will be deprecated in favor of atCall(x).returns()`);
     this.answerByIndex[callIndex] = new ProgrammedAnswer(value, false);
   }
 
-  whenCalledWith(...args: unknown[]): WhenCalledWithChain {
+  whenCalledWith(...args: unknown[]): ReturnRevertChain {
     return {
       returns: (value?: ProgrammedReturnValue) => {
         this.answerByArgs.push({
@@ -73,7 +74,19 @@ export class ProgrammableFunctionLogic extends WatchableFunctionLogic {
   }
 
   revertsAtCall(callIndex: number, reason?: string): void {
+    console.warn(`The use of revertsAtCall will be deprecated in favor of atCall(x).reverts()`);
     this.answerByIndex[callIndex] = new ProgrammedAnswer(reason, true);
+  }
+
+  atCall(index: number): AtCallChain {
+    const chain: Partial<AtCallChain> = super.atCall(index);
+    chain.returns = (value?: ProgrammedReturnValue) => {
+      this.answerByIndex[index] = new ProgrammedAnswer(value, false);
+    };
+    chain.reverts = (reason?: string) => {
+      this.answerByIndex[index] = new ProgrammedAnswer(reason, true);
+    };
+    return chain as AtCallChain;
   }
 
   reset(): void {

@@ -34,17 +34,19 @@ export interface ContractCall {
   target: string;
 }
 
-export type WhenCalledWithChain = {
+export type ReturnRevertChain = {
   returns: (value?: ProgrammedReturnValue) => void;
   reverts: (reason?: string) => void;
 };
+
+export type AtCallChain = WatchableFunctionLogic & ReturnRevertChain;
 
 export interface ProgrammableContractFunction extends WatchableContractFunction {
   returns: (value?: ProgrammedReturnValue) => void;
   returnsAtCall: (index: number, value?: ProgrammedReturnValue) => void;
   reverts: (reason?: string) => void;
   revertsAtCall: (index: number, reason?: string) => void;
-  whenCalledWith: (...args: unknown[]) => WhenCalledWithChain;
+  whenCalledWith: (...args: unknown[]) => ReturnRevertChain;
   reset: () => void;
 }
 
