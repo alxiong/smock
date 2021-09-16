@@ -16,9 +16,9 @@ describe('Mock: Initialization', () => {
     mockFactory = await smock.mock('Counter');
   });
 
-  it('should be able to deploy from specific signer', async () => {
+  it.only('should be able to deploy from specific signer', async () => {
     const mock = await mockFactory.connect(deployer).deploy(0);
-    expect(await mock.callStatic.deployer()).to.equal(deployer.address);
+    expect(await mock.setVariable).to.not.be.undefined;
   });
 
   it('should be able to use libraries', async () => {
