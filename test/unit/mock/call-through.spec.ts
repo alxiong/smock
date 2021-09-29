@@ -35,4 +35,10 @@ describe('Mock: Call through', () => {
     await mock.add(10);
     expect(mock.add).to.be.calledOnceWith(10);
   });
+
+  it('should be able to override throw/revert', async () => {
+    mock.err.returns(true);
+    // FIXME: somehow, it still passed through
+    expect(await mock.err()).to.equal(true);
+  })
 });

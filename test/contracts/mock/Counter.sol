@@ -13,4 +13,8 @@ contract Counter {
   function add(uint256 _amount) external {
     count += _amount;
   }
+
+  function err() external pure returns (bool) {
+    revert('Intended throw');
+  }
 }
